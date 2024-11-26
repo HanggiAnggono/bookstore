@@ -12,8 +12,5 @@ class Book(app.db.Model):
 
     def to_dict(self):
         return {
-            "id": self.id,
-            "title": self.title,
-            "author": self.author,
-            "published_date": self.published_date,
+            column.name: getattr(self, column.name) for column in self.__table__.columns
         }

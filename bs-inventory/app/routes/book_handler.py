@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request
 
 from app.models.book import Book
 from app import db
-from app.utils.http_util import error_response, success_response
-
+from utils.http_util import success_response, error_response
+from ..services.stock_service import get_stock_by_book_id
 
 book_blueprint = Blueprint("books", __name__, url_prefix="/books/")
 
@@ -59,3 +59,21 @@ def handle_book(book_id):
         db.session.commit()
 
         return success_response(data={"id": book_id}, code=200)
+
+
+# purchase a book but check for available stock first on stock service
+@book_blueprint.route("/<int:book_id>/purchase", methods=["POST"])
+def purchase_book(book_id):
+    book = Book.query.get(book_id)
+    data = request.get_json()
+    quantity = data.get("quantity")
+
+    stock = get_stock_by_book_id(book_id)
+
+    if not stock:
+        return error_response("Stock not found", code=404)
+
+    if stock["data"]["quantity"] < quantity:
+        return error_response("Not enough stock", code=400)
+
+    return success_response(data=book.to_dict())
