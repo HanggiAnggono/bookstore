@@ -4,7 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pydantic = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
 httpx = "*"
+utils = {file = "utils", editable = true}
+flask = "*"
 
 [dev-packages]
 

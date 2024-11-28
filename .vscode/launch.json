@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: bs-inventory",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/bs-inventory/main.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "FLASK_RUN_PORT": "5000"
+      },
+      "args": ["--port", "8000"]
+    },
+    {
+      "name": "Python: bs-stock",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/bs-stock/main.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "FLASK_RUN_PORT": "5001"
+      },
+      "args": ["--port", "8001"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "run all",
+      "configurations": [
+        "Python: bs-inventory",
+        "Python: bs-stock"
+      ]
+    }
+  ]
+}
