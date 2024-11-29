@@ -8,10 +8,11 @@ pydantic = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
 httpx = "*"
-utils = {file = "utils", editable = true}
 flask = "*"
+setuptools = "*"
+utils = {file = "utils", editable = true}
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.13"

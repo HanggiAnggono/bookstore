@@ -5,25 +5,27 @@
       "name": "Python: bs-inventory",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/bs-inventory/main.py",
-      "console": "integratedTerminal",
-      "justMyCode": true,
+      "module": "flask",
+      "args": ["run"],
       "env": {
-        "FLASK_RUN_PORT": "5000"
+        "PYTHONPATH": "/Users/hanggi/projects/bookstore",
+        "FLASK_RUN_PORT": "5000",
+        "FLASK_DEBUG": "1",
+        "FLASK_APP": "${workspaceFolder}/bs-inventory/main.py"
       },
-      "args": ["--port", "8000"]
     },
     {
       "name": "Python: bs-stock",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/bs-stock/main.py",
-      "console": "integratedTerminal",
-      "justMyCode": true,
+      "module": "flask",
+      "args": ["run"],
       "env": {
-        "FLASK_RUN_PORT": "5001"
-      },
-      "args": ["--port", "8001"]
+        "PYTHONPATH": "${workspaceFolder}",
+        "FLASK_RUN_PORT": "5001",
+        "FLASK_DEBUG": "1",
+        "FLASK_APP": "${workspaceFolder}/bs-stock/main.py"
+      }
     }
   ],
   "compounds": [
