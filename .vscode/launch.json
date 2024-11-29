@@ -2,6 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: bs-cms debug",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bookstore-cms/node_modules/next/dist/bin/next",
+      "cwd": "${workspaceFolder}/bookstore-cms",
+      "args": ["dev"],
+      "envFile": "${workspaceFolder}/bookstore-cms/.env",
+    },
+    {
       "name": "Python: bs-inventory",
       "type": "debugpy",
       "request": "launch",
@@ -32,6 +41,7 @@
     {
       "name": "run all",
       "configurations": [
+        "Python: bs-cms debug",
         "Python: bs-inventory",
         "Python: bs-stock"
       ]
