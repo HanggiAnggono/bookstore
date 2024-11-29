@@ -10,8 +10,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Page from '@/layouts/Page'
-import { formatDate } from '@/lib/date'
-import { qk } from '@/lib/query-keys'
+import { formatDate } from '@/utils/date'
+import { qk } from '@/utils/query-keys'
 import { useQuery } from '@tanstack/react-query'
 import { EditIcon, Pencil } from 'lucide-react'
 import Link from 'next/link'

@@ -9,7 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { qk } from '@/lib/query-keys'
+import { qk } from '@/utils/query-keys'
 
 export default function EditBookPage() {
   const { toast, dismiss } = useToast()
