@@ -10,44 +10,50 @@ import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { qk } from '@/utils/query-keys'
+import { LoadingState } from '@/components/ui/LoadingState'
+import { getBook, updateBook } from '@/modules/books/service'
 
 export default function EditBookPage() {
   const { toast, dismiss } = useToast()
-  const { handleSubmit, register, formState } = useForm<BookFormData>({
-    resolver: zodResolver(bookFormSchema),
-  })
-  const { bookId } = useParams() || {}
+  const { bookId = '' } = useParams() || {}
 
-  const { data, isLoading } = useQuery({
+  const {
+    data: book,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: qk.book(bookId as string),
-    queryFn: () =>
-      fetch(`/api/books/${bookId}`, { method: 'GET' }).then((res) =>
-        res.json()
-      ),
+    queryFn: () => getBook(bookId as string),
     enabled: !!bookId,
   })
 
-  console.log({ data, isLoading })
+  const { handleSubmit, register, formState } = useForm<BookFormData>({
+    resolver: zodResolver(bookFormSchema),
+    values: book
+      ? {
+          author: book.author,
+          published_date: book.published_date,
+          title: book.title,
+        }
+      : {
+          author: '',
+          published_date: '',
+          title: '',
+        },
+  })
 
   const { mutate, isPending } = useMutation({
     mutationFn: (body: BookFormData) => {
-      return fetch(`/api/books/${bookId}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-        credentials: 'include',
-      }).then((res) => res.json())
+      return updateBook(bookId as string, body)
     },
-    onSuccess: (resp) => {
-      dismiss('creating')
-      toast({ title: 'Book created!', duration: 10000 })
+    onSuccess: () => {
+      dismiss('updating')
+      toast({ title: 'Book updated!', duration: 10000 })
     },
     onError: (err) => {
-      dismiss('creating')
+      dismiss('updating')
       toast({
-        title: 'Error creating book',
+        title: 'Error updating book',
         description: `${err.message}`,
         duration: 10000,
       })
@@ -55,12 +61,16 @@ export default function EditBookPage() {
   })
 
   const onSubmit = handleSubmit((data: BookFormData) => {
-    toast({ itemID: 'creating', title: 'Creating book...', duration: Infinity })
+    toast({ itemID: 'updating', title: 'Updating book...', duration: Infinity })
     mutate(data)
   })
 
+  if (isLoading) {
+    return <LoadingState />
+  }
+
   return (
-    <Page title="Edit Book">
+    <Page title={book?.title}>
       <div className="w-2/3 mx-auto">
         <Image
           width={400}
@@ -112,7 +122,7 @@ export default function EditBookPage() {
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : null}
-            Create Book
+            Update
           </Button>
         </form>
       </div>
