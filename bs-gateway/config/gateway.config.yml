@@ -1,0 +1,34 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  api:
+    host: '*'
+    paths: '/api/*'
+serviceEndpoints:
+  bs_api_svc:
+    url: 'http://localhost:5001'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  default:
+    apiEndpoints:
+      - api
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - condition:
+              name: pathMatch
+              pattern: "/api/books/*"
+            action:
+              serviceEndpoint: bs_api_svc
