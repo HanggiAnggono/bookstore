@@ -1,15 +1,14 @@
 const express = require('express');
-
-const emojis = require('./emojis');
+const inventoryHandler = require('./inventory-handler');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
   res.json({
-    message: 'API - 👋🌎🌍🌏',
+    message: 'bookstore inventory API',
   });
 });
 
-router.use('/emojis', emojis);
+router.use('/inventory', inventoryHandler);
 
 module.exports = router;

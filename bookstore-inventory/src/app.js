@@ -7,8 +7,11 @@ require('dotenv').config();
 
 const middlewares = require('./middlewares');
 const api = require('./api');
+const database = require("./db");
 
 const app = express();
+
+database.sync();
 
 app.use(morgan('dev'));
 app.use(helmet());
@@ -17,11 +20,11 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
-    message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+    message: 'bookstore inventory',
   });
 });
 
-app.use('/api/v1', api);
+app.use('/api', api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);

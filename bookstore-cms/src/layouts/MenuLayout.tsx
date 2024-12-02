@@ -12,7 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
-import { BookCopy, Home, Info } from 'lucide-react'
+import { BookCopy, Home, Info, LucideBackpack } from 'lucide-react'
 import Link from 'next/link'
 
 const items = [
@@ -25,6 +25,11 @@ const items = [
     title: 'Books',
     url: '/books',
     icon: BookCopy,
+  },
+  {
+    title: 'Inventory',
+    url: '/inventory',
+    icon: LucideBackpack,
   },
   {
     title: 'About',

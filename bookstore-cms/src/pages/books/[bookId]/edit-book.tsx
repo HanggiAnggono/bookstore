@@ -9,7 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { qk } from '@/utils/query-keys'
+import { qk } from '@/lib/query-keys';
 import { LoadingState } from '@/components/ui/LoadingState'
 import { getBook, updateBook } from '@/modules/books/service'
 
