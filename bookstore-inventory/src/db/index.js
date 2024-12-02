@@ -1,7 +1,13 @@
-const Sequelize = require('sequelize')
-const database = new Sequelize('bookstore-api', 'bookstore', 'bookstore', {
-  dialect: 'sqlite',
-  storage: 'bookstore-api.sqlite',
-})
+const Sequelize = require("sequelize");
 
-module.exports = database
+const database = new Sequelize(
+  "bookstore-inventory",
+  "bookstore",
+  "bookstore",
+  {
+    dialect: "sqlite",
+    storage: "bookstore-inventory.sqlite",
+  }
+);
+
+module.exports = database;
