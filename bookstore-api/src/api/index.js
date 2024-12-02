@@ -1,6 +1,7 @@
 const express = require('express');
 
 const emojis = require('./emojis');
+const bookHandler = require("./book-handler");
 
 const router = express.Router();
 
@@ -10,6 +11,6 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/emojis', emojis);
+router.use('/books', bookHandler)
 
 module.exports = router;
