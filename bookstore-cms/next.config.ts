@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         {
           source: '/api/:path*',
-          destination: `${apiGatewayUrl}/:path*`,
+          destination: `${apiGatewayUrl}/api/:path*`,
         },
       ],
       afterFiles: [],
