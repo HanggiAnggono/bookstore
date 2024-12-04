@@ -1,0 +1,34 @@
+version: '3'
+services:
+  bs-gateway:
+    image: bs-gateway
+    build:
+      context: ./bs-gateway
+      dockerfile: ./Dockerfile
+    environment:
+      - PORT=8080
+      - BS_API_URL=http://bookstore-api:5000
+      - BS_INVENTORY_URL=http://bookstore-inventory:5000
+    ports:
+      - "8080:8080"
+      - "9876:9876"
+  bookstore-api:
+    image: bookstore-api
+    build:
+      context: ./bookstore-api
+      dockerfile: ./Dockerfile
+    depends_on:
+      - bs-gateway
+    environment:
+      - PORT=5000
+      - API_GATEWAY_URL=http://bs-gateway:8080
+  bookstore-inventory:
+    image: bookstore-inventory
+    build:
+      context: ./bookstore-inventory
+      dockerfile: ./Dockerfile
+    depends_on:
+      - bs-gateway
+    environment:
+      - PORT=5000
+      - API_GATEWAY_URL=http://bs-gateway:8080

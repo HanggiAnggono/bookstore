@@ -9,9 +9,9 @@ apiEndpoints:
     paths: '/api/*'
 serviceEndpoints:
   bs_api_svc:
-    url: 'http://localhost:5001'
+    url: ${BS_API_URL:-'http://localhost:5001'}
   bs_inventory_svc:
-    url: 'http://localhost:5002'
+    url: ${BS_INVENTORY_URL:-'http://localhost:5002'}
 policies:
   - basic-auth
   - cors

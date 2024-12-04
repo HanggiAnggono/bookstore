@@ -12,7 +12,7 @@ inventoryHandler.get('/', async (req, res) => {
   console.log({ bookIds });
 
   try {
-    const resp = await axios.get(`http://localhost:8080/api/books`, {
+    const resp = await axios.get(`${process.env.API_GATEWAY_URL}/api/books`, {
       params: { id: bookIds },
     });
     const { data: books } = resp.data || {};
