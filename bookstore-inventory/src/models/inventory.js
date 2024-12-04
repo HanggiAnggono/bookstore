@@ -14,6 +14,14 @@ const Inventory = models.sequelize.define('inventory', {
     type: models.Sequelize.ENUM('add', 'remove'),
     allowNull: false,
   },
+  notes: {
+    type: models.Sequelize.TEXT('medium'),
+    allowNull: true,
+  },
+  updated_by: {
+    type: models.Sequelize.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = Inventory;
