@@ -7,11 +7,9 @@ require('dotenv').config();
 
 const middlewares = require('./middlewares');
 const api = require('./api');
-const database = require("./db");
+const { sequelize } = require('./models');
 
 const app = express();
-
-database.sync();
 
 app.use(morgan('dev'));
 app.use(helmet());
@@ -29,4 +27,19 @@ app.use('/api', api);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
-module.exports = app;
+const startApp = async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log('database synced');
+
+    const port = process.env.PORT || 5000;
+
+    app.listen(port, () => {
+      console.log(`Listening: http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = startApp;

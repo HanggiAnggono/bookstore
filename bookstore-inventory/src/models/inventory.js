@@ -1,17 +1,17 @@
-const database = require('../db');
+const models = require('.');
 
 // sequelize model for inventory with book_id
-const Inventory = database.define('inventory', {
+const Inventory = models.sequelize.define('inventory', {
   book_id: {
-    type: database.Sequelize.INTEGER,
+    type: models.Sequelize.INTEGER,
     allowNull: false,
   },
   quantity: {
-    type: database.Sequelize.INTEGER,
+    type: models.Sequelize.INTEGER,
     allowNull: false,
   },
   action: {
-    type: database.Sequelize.ENUM('add', 'remove'),
+    type: models.Sequelize.ENUM('add', 'remove'),
     allowNull: false,
   },
 });
