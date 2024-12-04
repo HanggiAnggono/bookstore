@@ -8,9 +8,7 @@ RUN npm clean-install
 
 COPY . .
 
-# set port to 5001
-ENV PORT=5001
+EXPOSE 8080
+EXPOSE 9876
 
-EXPOSE 5001
-
-CMD ["node", "src/index.js"]
+CMD ["node", "server.js"]
