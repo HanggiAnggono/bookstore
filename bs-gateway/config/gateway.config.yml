@@ -10,6 +10,8 @@ apiEndpoints:
 serviceEndpoints:
   bs_api_svc:
     url: 'http://localhost:5001'
+  bs_inventory_svc:
+    url: 'http://localhost:5002'
 policies:
   - basic-auth
   - cors
@@ -32,3 +34,8 @@ pipelines:
               pattern: "/api/books/*"
             action:
               serviceEndpoint: bs_api_svc
+          - condition:
+              name: pathMatch
+              pattern: "/api/inventory/*"
+            action:
+              serviceEndpoint: bs_inventory_svc

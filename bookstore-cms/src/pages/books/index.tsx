@@ -12,19 +12,18 @@ import {
 import Page from '@/layouts/Page'
 import { formatDate } from '@/lib/date';
 import { qk } from '@/lib/query-keys';
-import { useQuery } from '@tanstack/react-query'
-import { EditIcon, Pencil } from 'lucide-react'
-import Link from 'next/link'
+import { getBooks } from '@/modules/books/service';
+import { useQuery } from '@tanstack/react-query';
+import { EditIcon, Pencil } from 'lucide-react';
+import Link from 'next/link';
 
 export default function BooksPage() {
-  const { isLoading, data } = useQuery({
+  const { isLoading, data: books } = useQuery({
     queryKey: qk.books(),
-    queryFn: () =>
-      fetch('/api/books/', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }).then((res) => res.json()),
-  })
+    queryFn: () => {
+      return getBooks();
+    },
+  });
 
   return (
     <Page title="Books">
@@ -34,9 +33,9 @@ export default function BooksPage() {
         </Link>
       </div>
 
-      {isLoading ? <LoadingState /> : <BooksTable data={data?.data || []} />}
+      {isLoading ? <LoadingState /> : <BooksTable data={books || []} />}
     </Page>
-  )
+  );
 }
 
 const BooksTable = ({

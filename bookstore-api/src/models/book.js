@@ -1,23 +1,30 @@
-const database = require("../db");
+const db = require('../../models');
 
-const Book = database.define("book", {
+const sqlz = db.sequelize;
+
+const Book = sqlz.define('book', {
   id: {
-    type: database.Sequelize.INTEGER,
+    type: sqlz.Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   title: {
-    type: database.Sequelize.STRING,
-    allowNull: false
+    type: sqlz.Sequelize.STRING,
+    allowNull: false,
   },
   author: {
-    type: database.Sequelize.STRING,
-    allowNull: false
+    type: sqlz.Sequelize.STRING,
+    allowNull: false,
   },
   published_date: {
-    type: database.Sequelize.STRING,
-    allowNull: true
-  }
-})
+    type: sqlz.Sequelize.STRING,
+    allowNull: true,
+  },
+  quantity_on_hand: {
+    type: sqlz.Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+});
 
-module.exports = Book
+module.exports = Book;

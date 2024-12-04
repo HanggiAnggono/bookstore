@@ -6,7 +6,7 @@ const Inventory = database.define('inventory', {
     type: database.Sequelize.INTEGER,
     allowNull: false,
   },
-  quantity_on_hand: {
+  quantity: {
     type: database.Sequelize.INTEGER,
     allowNull: false,
   },
