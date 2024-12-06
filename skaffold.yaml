@@ -1,0 +1,38 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - './infra/k8s/*'
+build:
+  local:
+    push: false
+  artifacts:
+    - image: bookstore-api
+      context: bookstore-api
+      docker:
+        dockerfile: bookstore-api/Dockerfile
+        target: dev
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.js'
+    # bookstore-inventory
+    - image: bookstore-inventory
+      context: bookstore-inventory
+      docker:
+        dockerfile: bookstore-inventory/Dockerfile
+        target: dev
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.js'
+    # bs-gateway
+    - image: bs-gateway
+      context: bs-gateway
+      docker:
+        dockerfile: bs-gateway/Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'

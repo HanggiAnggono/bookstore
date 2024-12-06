@@ -26,7 +26,9 @@ bookHandler.get('/', async (req, res) => {
     };
   });
 
-  res.json({ data });
+  console.log('get books');
+
+  res.json({ data, message: 'no books found, please create one' });
 });
 
 bookHandler.post('/', bookFormValidator, async (req, res) => {
