@@ -1,24 +1,14 @@
 const Sequelize = require('sequelize');
 
-const dibi = process.env.POSTGRES_DB;
+const database = process.env.POSTGRES_DB;
 const user = process.env.POSTGRES_USER;
 const password = process.env.POSTGRES_PASSWORD;
-const host = 'postgres-0.postgres';
+const host = process.env.POSTGRES_HOST;
 const port = process.env.POSTGRES_PORT;
 
-const sequelize = new Sequelize(`postgres://${user}:${password}@${host}:${port}/${dibi}`)
+const connectionString = `postgresql://${user}:${password}@${host}:${port}/${database}`;
 
-// const sequelize = new Sequelize(
-//   process.env.POSTGRES_DB,
-//   process.env.POSTGRES_USER,
-//   process.env.POSTGRES_PASSWORD,
-//   {
-//     dialect: 'postgres',
-//     host: host,
-//     port: process.env.POSTGRES_PORT,
-//     clientMinMessages: 'notice',
-//   },
-// );
+const sequelize = new Sequelize(connectionString);
 
 const db = {
   sequelize,
