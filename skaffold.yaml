@@ -36,3 +36,13 @@ build:
         manual:
           - dest: .
             src: '*.js'
+    # bs-cms
+    - image: bookstore-cms
+      context: bookstore-cms
+      docker:
+        dockerfile: bookstore-cms/Dockerfile
+        target: dev
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'

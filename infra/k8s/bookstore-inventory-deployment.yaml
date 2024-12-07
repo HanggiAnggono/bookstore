@@ -38,6 +38,13 @@ spec:
                 secretKeyRef:
                   name: bs-secret
                   key: POSTGRES_PASSWORD
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "80m"
+            limits:
+              memory: "128Mi"
+              cpu: "80m"
       restartPolicy: Always
 
 ---

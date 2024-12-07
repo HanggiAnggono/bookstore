@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookstore-cms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookstore-cms
+  template:
+    metadata:
+      labels:
+        app: bookstore-cms
+    spec:
+      containers:
+        - name: bookstore-cms
+          image: bookstore-cms
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: bookstore-cms-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookstore-cms
+spec:
+  type: LoadBalancer
+  selector:
+    app: bookstore-cms
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
