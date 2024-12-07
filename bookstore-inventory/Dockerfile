@@ -13,8 +13,8 @@ ENV PORT=5001
 
 EXPOSE 5001
 
-FROM builder as dev
+FROM builder AS dev
 CMD ["npm", "run", "dev"]
 
-FROM builder as prod
+FROM builder AS prod
 CMD ["node", "src/index.js"]

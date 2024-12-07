@@ -1,12 +1,14 @@
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(
-  'bookstore-inventory',
-  'bookstore',
-  'bookstore',
+  process.env.POSTGRES_DB,
+  process.env.POSTGRES_USER,
+  process.env.POSTGRES_PASSWORD,
   {
-    dialect: 'sqlite',
-    storage: 'bookstore-inventory.sqlite',
+    dialect: 'postgres',
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    clientMinMessages: 'notice',
   },
 );
 
