@@ -9,7 +9,6 @@ import {
 } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { Form, FormControl, FormItem, FormLabel } from '../ui/form';
-import { FormSelect } from '../ui/SelectOptions';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -20,6 +19,7 @@ import { addInventory } from '@/modules/inventory/service';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { FormSelect } from '../ui/form/FormSelect';
 
 const inventoryFormSchema = z.object({
   book_id: z.string().min(1, { message: 'Required' }),

@@ -1,29 +1,15 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useToast } from '@/hooks/use-toast'
-import Page from '@/layouts/Page'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { Loader2 } from 'lucide-react'
-import Image from 'next/image'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
-export const bookFormSchema = z.object({
-  title: z.string().min(1, { message: 'Required' }),
-  author: z.string().min(1, { message: 'Required' }),
-  published_date: z.string().date(),
-})
-
-export type BookFormData = z.infer<typeof bookFormSchema>
+import BookForm, { BookFormData } from '@/components/book/BookForm';
+import { useToast } from '@/hooks/use-toast';
+import Page from '@/layouts/Page';
+import { useMutation } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function CreateBookPage() {
-  const { toast, dismiss } = useToast()
-  const { handleSubmit, register, formState } = useForm<BookFormData>({
-    resolver: zodResolver(bookFormSchema),
-  })
+  const { toast, dismiss } = useToast();
+  const router = useRouter();
 
-  const { mutate, isPending } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (body: BookFormData) => {
       return fetch('/api/books/', {
         method: 'POST',
@@ -32,26 +18,31 @@ export default function CreateBookPage() {
         },
         body: JSON.stringify(body),
         credentials: 'include',
-      }).then((res) => res.json())
+      }).then((res) => res.json());
     },
-    onSuccess: (resp) => {
-      dismiss('creating')
-      toast({ title: 'Book created!', duration: 10000 })
+    onSuccess: (_resp) => {
+      dismiss('creating');
+      toast({ title: 'Book created!', duration: 10000 });
+      router.push('/books');
     },
     onError: (err) => {
-      dismiss('creating')
+      dismiss('creating');
       toast({
         title: 'Error creating book',
         description: `${err.message}`,
         duration: 10000,
-      })
+      });
     },
-  })
+  });
 
-  const onSubmit = handleSubmit((data: BookFormData) => {
-    toast({ itemID: 'creating', title: 'Creating book...', duration: Infinity })
-    mutate(data)
-  })
+  const onSubmit = async (data: BookFormData) => {
+    toast({
+      itemID: 'creating',
+      title: 'Creating book...',
+      duration: Infinity,
+    });
+    await mutateAsync(data);
+  };
 
   return (
     <Page title="Create Book">
@@ -71,45 +62,8 @@ export default function CreateBookPage() {
           enjoyable as possible.
         </p>
 
-        <form onSubmit={onSubmit} className="flex flex-col gap-2">
-          <div>
-            <label htmlFor="title">Title</label>
-            <Input type="text" {...register('title')} />
-            {formState.errors.title && (
-              <p className="text-destructive">
-                {formState.errors.title.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="author">Author</label>
-            <Input type="text" {...register('author')} />
-            {formState.errors.author && (
-              <p className="text-destructive">
-                {formState.errors.author.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="published_date">Published</label>
-            <Input type="date" {...register('published_date')} />
-            {formState.errors.published_date && (
-              <p className="text-destructive">
-                {formState.errors.published_date.message}
-              </p>
-            )}
-          </div>
-
-          <Button type="submit" disabled={isPending}>
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : null}
-            Create Book
-          </Button>
-        </form>
+        <BookForm onSubmit={onSubmit} />
       </div>
     </Page>
-  )
+  );
 }

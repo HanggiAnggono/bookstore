@@ -1,15 +1,8 @@
 const express = require('express');
 
-const bookHandler = require("./book-handler");
-
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'API - 👋🌎🌍🌏',
-  });
-});
-
-router.use('/books', bookHandler)
+router.use('/books/genres', require('./genre-handler'));
+router.use('/books', require('./book-handler'));
 
 module.exports = router;

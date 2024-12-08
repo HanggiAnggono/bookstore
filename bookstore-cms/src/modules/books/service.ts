@@ -1,3 +1,11 @@
+import { z } from 'zod';
+
+export const bookFormSchema = z.object({
+  title: z.string().min(1, { message: 'Required' }),
+  author: z.string().min(1, { message: 'Required' }),
+  published_date: z.string().date(),
+});
+
 export type Book = {
   id: number;
   title: string;

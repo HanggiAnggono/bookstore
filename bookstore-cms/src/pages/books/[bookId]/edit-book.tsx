@@ -1,72 +1,60 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import Page from '@/layouts/Page'
-import { Loader2 } from 'lucide-react'
-import { BookFormData, bookFormSchema } from '../create'
-import { useToast } from '@/hooks/use-toast'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
-import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import Page from '@/layouts/Page';
+import { useToast } from '@/hooks/use-toast';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import { qk } from '@/lib/query-keys';
-import { LoadingState } from '@/components/ui/LoadingState'
-import { getBook, updateBook } from '@/modules/books/service'
+import { getBook, updateBook } from '@/modules/books/service';
+import BookForm, { BookFormData } from '@/components/book/BookForm';
+import { useRouter } from 'next/router';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 export default function EditBookPage() {
-  const { toast, dismiss } = useToast()
-  const { bookId = '' } = useParams() || {}
+  const { toast, dismiss } = useToast();
+  const router = useRouter();
+  const { bookId = '' } = router.query;
 
-  const {
-    data: book,
-    error,
-    isLoading,
-  } = useQuery({
+  const { data: book, isLoading } = useQuery({
     queryKey: qk.book(bookId as string),
     queryFn: () => getBook(bookId as string),
     enabled: !!bookId,
-  })
+  });
 
-  const { handleSubmit, register, formState } = useForm<BookFormData>({
-    resolver: zodResolver(bookFormSchema),
-    values: book
-      ? {
-          author: book.author,
-          published_date: book.published_date,
-          title: book.title,
-        }
-      : {
-          author: '',
-          published_date: '',
-          title: '',
-        },
-  })
-
-  const { mutate, isPending } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (body: BookFormData) => {
-      return updateBook(bookId as string, body)
+      return updateBook(bookId as string, body);
     },
     onSuccess: () => {
-      dismiss('updating')
-      toast({ title: 'Book updated!', duration: 10000 })
+      dismiss('updating');
+      toast({ title: 'Book updated!', duration: 10000 });
+      router.push('/books');
     },
     onError: (err) => {
-      dismiss('updating')
+      dismiss('updating');
       toast({
         title: 'Error updating book',
         description: `${err.message}`,
         duration: 10000,
-      })
+      });
     },
-  })
+  });
 
-  const onSubmit = handleSubmit((data: BookFormData) => {
-    toast({ itemID: 'updating', title: 'Updating book...', duration: Infinity })
-    mutate(data)
-  })
+  const onSubmit = async (data: BookFormData) => {
+    toast({
+      itemID: 'updating',
+      title: 'Updating book...',
+      duration: Infinity,
+    });
+    await mutateAsync(data);
+  };
+
+  const defaultValues: BookFormData = {
+    author: book?.author || '',
+    published_date: book?.published_date || '',
+    title: book?.title || '',
+  };
 
   if (isLoading) {
-    return <LoadingState />
+    return <LoadingState />;
   }
 
   return (
@@ -87,45 +75,8 @@ export default function EditBookPage() {
           enjoyable as possible.
         </p>
 
-        <form onSubmit={onSubmit} className="flex flex-col gap-2">
-          <div>
-            <label htmlFor="title">Title</label>
-            <Input type="text" {...register('title')} />
-            {formState.errors.title && (
-              <p className="text-destructive">
-                {formState.errors.title.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="author">Author</label>
-            <Input type="text" {...register('author')} />
-            {formState.errors.author && (
-              <p className="text-destructive">
-                {formState.errors.author.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="published_date">Published</label>
-            <Input type="date" {...register('published_date')} />
-            {formState.errors.published_date && (
-              <p className="text-destructive">
-                {formState.errors.published_date.message}
-              </p>
-            )}
-          </div>
-
-          <Button type="submit" disabled={isPending}>
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : null}
-            Update
-          </Button>
-        </form>
+        <BookForm onSubmit={onSubmit} defaultValues={defaultValues} />
       </div>
     </Page>
-  )
+  );
 }
