@@ -1,15 +1,16 @@
-import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/ui/EmptyState'
-import { LoadingState } from '@/components/ui/LoadingState'
-import { Progress } from '@/components/ui/progress'
+import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { LoadingState } from '@/components/ui/LoadingState';
+import { Progress } from '@/components/ui/progress';
 import {
   Table,
   TableBody,
   TableCell,
+  TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import Page from '@/layouts/Page'
+} from '@/components/ui/table';
+import Page from '@/layouts/Page';
 import { formatDate } from '@/lib/date';
 import { qk } from '@/lib/query-keys';
 import { getBooks } from '@/modules/books/service';
@@ -42,11 +43,11 @@ const BooksTable = ({
   data = [],
 }: {
   data: Array<{
-    id: number
-    title: string
-    author: string
-    published_date: string
-  }>
+    id: number;
+    title: string;
+    author: string;
+    published_date: string;
+  }>;
 }) => {
   if (data.length === 0) {
     return (
@@ -54,7 +55,7 @@ const BooksTable = ({
         title="No books found"
         message="Create a new book to get started."
       />
-    )
+    );
   }
 
   return (
@@ -62,10 +63,10 @@ const BooksTable = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableCell>Book Title</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Published</TableCell>
-            <TableCell>Action</TableCell>
+            <TableHead>Book Title</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Published</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -84,5 +85,5 @@ const BooksTable = ({
         </TableBody>
       </Table>
     </div>
-  )
-}
+  );
+};

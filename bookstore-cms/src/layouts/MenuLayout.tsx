@@ -12,7 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
-import { BookCopy, Home, Info, LucideBackpack } from 'lucide-react'
+import { Blocks, BookCopy, Home, Info, LucideBackpack } from 'lucide-react';
 import Link from 'next/link'
 
 const items = [
@@ -32,11 +32,16 @@ const items = [
     icon: LucideBackpack,
   },
   {
+    title: 'Genres',
+    url: '/genre',
+    icon: Blocks,
+  },
+  {
     title: 'About',
     url: '/about',
     icon: Info,
   },
-]
+];
 
 export function MenuLayout({ children }: { children: React.ReactNode }) {
   return (

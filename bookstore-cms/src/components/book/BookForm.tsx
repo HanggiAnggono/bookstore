@@ -9,6 +9,8 @@ import { MultiSelect } from '../ui/MultiSelect';
 import { useQuery } from '@tanstack/react-query';
 import { qk } from '@/lib/query-keys';
 import { getGenres } from '@/modules/genre/service';
+import { toLabelValues } from '@/lib/utils';
+import Link from 'next/link';
 
 export type BookFormData = z.infer<typeof bookFormSchema> & {
   genres: Array<{ value: string; label: string }>;
@@ -26,7 +28,7 @@ export default function BookForm(props: Props) {
       defaultValues: props.defaultValues,
     });
 
-  const { data: genres, isLoading: isGenresLoading } = useQuery({
+  const { data: genres = [], isLoading: isGenresLoading } = useQuery({
     queryKey: qk.genres(),
     queryFn: async () => {
       const genres = await getGenres();
@@ -58,13 +60,16 @@ export default function BookForm(props: Props) {
 
       <div>
         <label htmlFor="genres">Genres</label>
-        <div className="inline ml-2">Create New</div>
+        <Link href="/genre" className="inline ml-2 text-blue-500">
+          Create Genres
+        </Link>
         <MultiSelect
-          options={[]}
+          options={toLabelValues(genres, 'id', 'name')}
           value={watch('genres')}
           onChange={(value) => {
             setValue('genres', value);
           }}
+          isLoading={isGenresLoading}
         />
       </div>
 
