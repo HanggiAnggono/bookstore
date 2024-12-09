@@ -9,7 +9,6 @@ inventoryHandler.get('/', async (req, res) => {
   const inventories = await Inventory.findAll({ order: [['id', 'DESC']] });
 
   const bookIds = inventories.map((i) => i.book_id);
-  console.log({ bookIds });
 
   try {
     const resp = await axios.get(`${process.env.API_GATEWAY_URL}/api/books`, {

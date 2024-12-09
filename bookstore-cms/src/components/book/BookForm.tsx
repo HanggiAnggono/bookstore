@@ -12,9 +12,7 @@ import { getGenres } from '@/modules/genre/service';
 import { toLabelValues } from '@/lib/utils';
 import Link from 'next/link';
 
-export type BookFormData = z.infer<typeof bookFormSchema> & {
-  genres: Array<{ value: string; label: string }>;
-};
+export type BookFormData = z.infer<typeof bookFormSchema>;
 
 type Props = {
   onSubmit: (data: BookFormData) => void;
@@ -22,11 +20,12 @@ type Props = {
 };
 
 export default function BookForm(props: Props) {
-  const { handleSubmit, register, formState, watch, setValue } =
-    useForm<BookFormData>({
-      resolver: zodResolver(bookFormSchema),
-      defaultValues: props.defaultValues,
-    });
+  const form = useForm<BookFormData>({
+    resolver: zodResolver(bookFormSchema),
+    defaultValues: props.defaultValues,
+  });
+
+  const { handleSubmit, register, formState, watch, setValue } = form;
 
   const { data: genres = [], isLoading: isGenresLoading } = useQuery({
     queryKey: qk.genres(),
@@ -36,9 +35,11 @@ export default function BookForm(props: Props) {
     },
   });
 
-  const { isLoading, isSubmitting } = formState;
+  const { isLoading, isSubmitting, isValid, errors } = formState;
 
-  const onSubmit = handleSubmit(props.onSubmit);
+  const onSubmit = handleSubmit((d) => {
+    props.onSubmit(d);
+  });
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-2">

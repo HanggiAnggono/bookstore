@@ -1,6 +1,7 @@
 import BookForm, { BookFormData } from '@/components/book/BookForm';
 import { useToast } from '@/hooks/use-toast';
 import Page from '@/layouts/Page';
+import { createBook } from '@/modules/books/service';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,14 +12,7 @@ export default function CreateBookPage() {
 
   const { mutateAsync } = useMutation({
     mutationFn: (body: BookFormData) => {
-      return fetch('/api/books/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-        credentials: 'include',
-      }).then((res) => res.json());
+      return createBook(body);
     },
     onSuccess: (_resp) => {
       dismiss('creating');

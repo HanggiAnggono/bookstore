@@ -2,6 +2,7 @@ const express = require('express');
 const Book = require('../models/book');
 const { check, validationResult } = require('express-validator');
 const { Op } = require('sequelize');
+const Genre = require('../models/genre');
 
 const bookHandler = express.Router();
 
@@ -9,6 +10,8 @@ const bookFormValidator = [
   check('title').not().isEmpty().trim().escape(),
   check('author').not().isEmpty().trim().escape(),
   check('published_date').not().isEmpty().trim().escape(),
+  check('genres').isArray(),
+  check('genres.*.value').not().isEmpty().trim().escape(),
 ];
 
 bookHandler.get('/', async (req, res) => {
@@ -41,6 +44,16 @@ bookHandler.post('/', bookFormValidator, async (req, res) => {
     published_date: req.body.published_date,
   });
 
+  const genres = await Genre.findAll({
+    where: {
+      id: {
+        [Op.in]: req.body.genres.map((g) => g.value),
+      },
+    },
+  });
+
+  await book.setGenres(genres);
+
   res.json({
     data: book,
     status: 'success',
@@ -68,16 +81,25 @@ bookHandler.put('/:id', bookFormValidator, async (req, res) => {
     published_date: req.body.published_date,
   };
 
-  await Book.update(payload, {
+  const book = await Book.findByPk(req.params.id);
+
+  const genres = await Genre.findAll({
     where: {
-      id: req.params.id,
+      id: {
+        [Op.in]: req.body.genres.map((g) => g.value),
+      },
     },
   });
+
+  await book.set(payload);
+  await book.setGenres(genres);
+  await book.save();
 
   res.json({
     data: {
       id: req.params.id,
       ...payload,
+      genres,
     },
     status: 'success',
   });

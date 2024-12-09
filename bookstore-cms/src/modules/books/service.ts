@@ -4,6 +4,14 @@ export const bookFormSchema = z.object({
   title: z.string().min(1, { message: 'Required' }),
   author: z.string().min(1, { message: 'Required' }),
   published_date: z.string().date(),
+  genres: z
+    .array(
+      z.object({
+        value: z.coerce.string().min(1, { message: 'Required' }),
+        label: z.string(),
+      }),
+    )
+    .optional(),
 });
 
 export type Book = {
@@ -31,7 +39,21 @@ export const getBook = (bookId: string) => {
   );
 };
 
-export const updateBook = (bookId: string, body: BookFormData) => {
+export const createBook = (body: z.infer<typeof bookFormSchema>) => {
+  return fetch('/api/books/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+    credentials: 'include',
+  }).then((res) => res.json());
+};
+
+export const updateBook = (
+  bookId: string,
+  body: z.infer<typeof bookFormSchema>,
+) => {
   return fetch(`/api/books/${bookId}`, {
     method: 'PUT',
     headers: {
