@@ -5,7 +5,7 @@ const { default: axios } = require('axios');
 
 const inventoryHandler = express.Router();
 
-inventoryHandler.get('/', async (req, res) => {
+inventoryHandler.get('/', async function getInventories(req, res) {
   const inventories = await Inventory.findAll({ order: [['id', 'DESC']] });
 
   const bookIds = inventories.map((i) => i.book_id);
@@ -37,7 +37,7 @@ inventoryHandler.post(
     check('book_id').not().isEmpty().trim().escape(),
     check('action').not().isEmpty().trim().escape(),
   ],
-  async (req, res) => {
+  async function updateInventory(req, res) {
     const inventory = await Inventory.create(req.body);
     res.json({
       data: inventory,

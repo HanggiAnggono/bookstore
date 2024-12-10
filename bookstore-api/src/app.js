@@ -8,6 +8,9 @@ require('dotenv').config();
 const middlewares = require('./middlewares');
 const api = require('./api');
 const { sequelize } = require('./models');
+require('./models/book');
+require('./models/genre');
+require('./models/book-genre');
 
 const app = express();
 

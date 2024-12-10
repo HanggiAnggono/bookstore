@@ -13,7 +13,11 @@ export default function EditBookPage() {
   const router = useRouter();
   const { bookId = '' } = router.query;
 
-  const { data: book, isLoading } = useQuery({
+  const {
+    data: book,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: qk.book(bookId as string),
     queryFn: () => getBook(bookId as string),
     enabled: !!bookId,
@@ -27,6 +31,7 @@ export default function EditBookPage() {
       dismiss('updating');
       toast({ title: 'Book updated!', duration: 10000 });
       router.push('/books');
+      refetch();
     },
     onError: (err) => {
       dismiss('updating');
@@ -51,6 +56,7 @@ export default function EditBookPage() {
     author: book?.author || '',
     published_date: book?.published_date || '',
     title: book?.title || '',
+    genres: book?.genres?.map((g) => ({ label: g.name, value: g.id })) || [],
   };
 
   if (isLoading) {

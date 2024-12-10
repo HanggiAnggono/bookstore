@@ -13,7 +13,7 @@ import {
 import Page from '@/layouts/Page';
 import { formatDate } from '@/lib/date';
 import { qk } from '@/lib/query-keys';
-import { getBooks } from '@/modules/books/service';
+import { Book, getBooks } from '@/modules/books/service';
 import { useQuery } from '@tanstack/react-query';
 import { EditIcon, Pencil } from 'lucide-react';
 import Link from 'next/link';
@@ -39,16 +39,7 @@ export default function BooksPage() {
   );
 }
 
-const BooksTable = ({
-  data = [],
-}: {
-  data: Array<{
-    id: number;
-    title: string;
-    author: string;
-    published_date: string;
-  }>;
-}) => {
+const BooksTable = ({ data = [] }: { data: Array<Book> }) => {
   if (data.length === 0) {
     return (
       <EmptyState
@@ -65,6 +56,7 @@ const BooksTable = ({
           <TableRow>
             <TableHead>Book Title</TableHead>
             <TableHead>Author</TableHead>
+            <TableHead>Genre</TableHead>
             <TableHead>Published</TableHead>
             <TableHead>Action</TableHead>
           </TableRow>
@@ -74,6 +66,9 @@ const BooksTable = ({
             <TableRow key={book.id}>
               <TableCell>{book.title}</TableCell>
               <TableCell>{book.author}</TableCell>
+              <TableCell>
+                {book.genres?.map((genre) => genre.name).join(', ')}
+              </TableCell>
               <TableCell>{formatDate(book.published_date)}</TableCell>
               <TableCell>
                 <Link href={`/books/${book.id}/edit-book`}>

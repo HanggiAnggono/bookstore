@@ -37,8 +37,8 @@ export default function BookForm(props: Props) {
 
   const { isLoading, isSubmitting, isValid, errors } = formState;
 
-  const onSubmit = handleSubmit((d) => {
-    props.onSubmit(d);
+  const onSubmit = handleSubmit(async (d) => {
+    await props.onSubmit(d);
   });
 
   return (

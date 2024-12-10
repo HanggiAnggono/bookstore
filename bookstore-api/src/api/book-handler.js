@@ -14,13 +14,23 @@ const bookFormValidator = [
   check('genres.*.value').not().isEmpty().trim().escape(),
 ];
 
-bookHandler.get('/', async (req, res) => {
+const include = [
+  {
+    model: Genre,
+    attributes: ['id', 'name'],
+    through: { attributes: [] },
+    required: false,
+  },
+];
+
+bookHandler.get('/', async function getBooks(req, res) {
   const params = req.query;
   const { id } = params || {};
 
-  const books = await Book.findAll(
-    id ? { where: { id: { [Op.in]: id } } } : {},
-  );
+  const books = await Book.findAll({
+    ...(id ? { where: { id: { [Op.in]: id } } } : {}),
+    include,
+  });
 
   const data = books.map((b) => {
     return {
@@ -32,7 +42,7 @@ bookHandler.get('/', async (req, res) => {
   res.json({ data });
 });
 
-bookHandler.post('/', bookFormValidator, async (req, res) => {
+bookHandler.post('/', bookFormValidator, async function createBook(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -42,6 +52,7 @@ bookHandler.post('/', bookFormValidator, async (req, res) => {
     title: req.body.title,
     author: req.body.author,
     published_date: req.body.published_date,
+    genres: req.body.genres.map((g) => g.value),
   });
 
   const genres = await Genre.findAll({
@@ -61,15 +72,18 @@ bookHandler.post('/', bookFormValidator, async (req, res) => {
 });
 
 // get book
-bookHandler.get('/:id', async (req, res) => {
-  const book = await Book.findByPk(req.params.id);
+bookHandler.get('/:id', async function getBook(req, res) {
+  const book = await Book.findByPk(req.params.id, {
+    include: include,
+  });
+
   res.json({
     data: book,
   });
 });
 
 // update book
-bookHandler.put('/:id', bookFormValidator, async (req, res) => {
+bookHandler.put('/:id', bookFormValidator, async function updateBook(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -106,7 +120,7 @@ bookHandler.put('/:id', bookFormValidator, async (req, res) => {
 });
 
 // delete book
-bookHandler.delete('/:id', async (req, res) => {
+bookHandler.delete('/:id', async function deleteBook(req, res) {
   await Book.destroy({
     where: {
       id: req.params.id,
