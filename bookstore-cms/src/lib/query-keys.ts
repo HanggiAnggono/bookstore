@@ -1,6 +1,6 @@
 export const qk = {
   // books
-  books: () => ['books'],
+  books: (filter = {}) => ['books', filter],
   book: (id: number | string) => ['book', id],
   bookCover: (id: number | string) => ['book-cover', id],
 
@@ -10,4 +10,8 @@ export const qk = {
 
   // genres
   genres: () => ['genres'],
+
+  // authors
+  authors: (filter = {}) => ['authors', filter],
+  author: (id: number | string) => ['author', id],
 };

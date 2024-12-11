@@ -1,5 +1,6 @@
 const { Model } = require('sequelize');
 const models = require('.');
+const Author = require('./author');
 
 class Book extends Model {}
 
@@ -14,11 +15,11 @@ Book.init(
       type: models.Sequelize.STRING,
       allowNull: false,
     },
-    author: {
-      type: models.Sequelize.STRING,
-      allowNull: false,
-    },
     published_date: {
+      type: models.Sequelize.STRING,
+      allowNull: true,
+    },
+    isbn: {
       type: models.Sequelize.STRING,
       allowNull: true,
     },
@@ -33,5 +34,8 @@ Book.init(
     modelName: 'book',
   },
 );
+
+Book.belongsTo(Author);
+Author.hasMany(Book);
 
 module.exports = Book;

@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const bookFormSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1, { message: 'Required' }),
-  author: z.string().min(1, { message: 'Required' }),
+  author_id: z.string().min(1, { message: 'Required' }),
   published_date: z.string().date(),
   genres: z
     .array(
@@ -18,7 +18,7 @@ export const bookFormSchema = z.object({
 export type Book = {
   id?: number;
   title: string;
-  author: string;
+  author: { id: string; name: string };
   published_date: string;
   quantity_on_hand: number;
   genres: Array<{ id: string; name: string }>;

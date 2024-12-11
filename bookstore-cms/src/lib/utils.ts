@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -30,3 +31,7 @@ export function toLabelValues(
     };
   });
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export type Infer<T = unknown> = ComponentProps<T>;

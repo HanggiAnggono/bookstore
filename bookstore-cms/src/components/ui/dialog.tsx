@@ -106,6 +106,36 @@ const DialogDescription = React.forwardRef<
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
+
+type Props = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: React.ReactNode;
+  title?: string;
+  description?: string;
+  children?: React.ReactNode;
+};
+
+export const DialogDeclarative = ({
+  open,
+  onOpenChange,
+  title,
+  description,
+  children,
+}: Props) => {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export {
   Dialog,
   DialogPortal,

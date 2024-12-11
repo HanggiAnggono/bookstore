@@ -11,9 +11,16 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar'
-import { Blocks, BookCopy, Home, Info, LucideBackpack } from 'lucide-react';
-import Link from 'next/link'
+} from '@/components/ui/sidebar';
+import {
+  Blocks,
+  BookCopy,
+  Home,
+  Info,
+  LucideBackpack,
+  User,
+} from 'lucide-react';
+import Link from 'next/link';
 
 const items = [
   {
@@ -25,6 +32,11 @@ const items = [
     title: 'Books',
     url: '/books',
     icon: BookCopy,
+  },
+  {
+    title: 'Authors',
+    url: '/authors',
+    icon: User,
   },
   {
     title: 'Inventory',
@@ -74,5 +86,5 @@ export function MenuLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
     </SidebarProvider>
-  )
+  );
 }

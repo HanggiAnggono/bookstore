@@ -11,6 +11,7 @@ const { sequelize } = require('./models');
 require('./models/book');
 require('./models/genre');
 require('./models/book-genre');
+require('./models/author');
 
 const app = express();
 

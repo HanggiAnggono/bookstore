@@ -65,7 +65,7 @@ const BooksTable = ({ data = [] }: { data: Array<Book> }) => {
           {data.map((book) => (
             <TableRow key={book.id}>
               <TableCell>{book.title}</TableCell>
-              <TableCell>{book.author}</TableCell>
+              <TableCell>{book.author?.name}</TableCell>
               <TableCell>
                 {book.genres?.map((genre) => genre.name).join(', ')}
               </TableCell>

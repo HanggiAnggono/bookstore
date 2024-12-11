@@ -35,7 +35,7 @@ export default function BookForm(props: Props) {
     },
   });
 
-  const { isLoading, isSubmitting, isValid, errors } = formState;
+  const { isLoading, isSubmitting } = formState;
 
   const onSubmit = handleSubmit(async (d) => {
     await props.onSubmit(d);
@@ -53,9 +53,11 @@ export default function BookForm(props: Props) {
 
       <div>
         <label htmlFor="author">Author</label>
-        <Input type="text" {...register('author')} disabled={isLoading} />
-        {formState.errors.author && (
-          <p className="text-destructive">{formState.errors.author.message}</p>
+        <Input type="text" {...register('author_id')} disabled={isLoading} />
+        {formState.errors.author_id && (
+          <p className="text-destructive">
+            {formState.errors.author_id.message}
+          </p>
         )}
       </div>
 
@@ -66,7 +68,7 @@ export default function BookForm(props: Props) {
         </Link>
         <MultiSelect
           options={toLabelValues(genres, 'id', 'name')}
-          value={watch('genres')}
+          value={watch('genres') || []}
           onChange={(value) => {
             setValue('genres', value);
           }}
