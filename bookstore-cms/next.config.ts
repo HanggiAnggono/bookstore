@@ -1,8 +1,8 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
-const apiGatewayUrl = process.env.API_GATEWAY_URL
+const apiGatewayUrl = process.env.API_GATEWAY_URL;
 
-console.log('API_GATEWAY_URL', apiGatewayUrl)
+console.log('API_GATEWAY_URL', apiGatewayUrl);
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -27,8 +27,8 @@ const nextConfig: NextConfig = {
       ],
       afterFiles: [],
       fallback: [],
-    }
+    };
   },
-}
+};
 
 export default nextConfig;

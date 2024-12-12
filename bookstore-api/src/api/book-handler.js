@@ -3,6 +3,7 @@ const Book = require('../models/book');
 const { check, validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 const Genre = require('../models/genre');
+const Author = require('../models/author');
 
 const bookHandler = express.Router();
 
@@ -19,6 +20,11 @@ const include = [
     model: Genre,
     attributes: ['id', 'name'],
     through: { attributes: [] },
+    required: false,
+  },
+  {
+    model: Author,
+    attributes: ['id', 'name'],
     required: false,
   },
 ];
@@ -91,7 +97,7 @@ bookHandler.put('/:id', bookFormValidator, async function updateBook(req, res) {
 
   const payload = {
     title: req.body.title,
-    author: req.body.author,
+    authorId: req.body.author ? req.body.author.value : null,
     published_date: req.body.published_date,
   };
 

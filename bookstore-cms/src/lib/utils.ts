@@ -21,8 +21,8 @@ export function absoluteUrl(path: string) {
 
 export function toLabelValues(
   items: Array<any>,
-  valueAccessor: string,
-  labelAccessor: string,
+  valueAccessor: string = 'id',
+  labelAccessor: string = 'name',
 ) {
   return items.map((item) => {
     return {

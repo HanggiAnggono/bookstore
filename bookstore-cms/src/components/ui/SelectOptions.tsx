@@ -1,11 +1,3 @@
-import books from '@/pages/books';
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-} from './form';
 import {
   Select,
   SelectContent,
@@ -59,4 +51,3 @@ export const SelectOptions = ({
     </Select>
   );
 };
-

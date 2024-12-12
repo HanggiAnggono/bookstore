@@ -7,6 +7,7 @@ import { getBook, updateBook } from '@/modules/books/service';
 import BookForm, { BookFormData } from '@/components/book/BookForm';
 import { useRouter } from 'next/router';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { AxiosError } from 'axios';
 
 export default function EditBookPage() {
   const { toast, dismiss } = useToast();
@@ -23,23 +24,9 @@ export default function EditBookPage() {
     enabled: !!bookId,
   });
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationFn: (body: BookFormData) => {
       return updateBook(bookId as string, body);
-    },
-    onSuccess: () => {
-      dismiss('updating');
-      toast({ title: 'Book updated!', duration: 10000 });
-      router.push('/books');
-      refetch();
-    },
-    onError: (err) => {
-      dismiss('updating');
-      toast({
-        title: 'Error updating book',
-        description: `${err.message}`,
-        duration: 10000,
-      });
     },
   });
 
@@ -49,15 +36,45 @@ export default function EditBookPage() {
       title: 'Updating book...',
       duration: Infinity,
     });
-    await mutateAsync(data);
+    await mutateAsync(data)
+      .then(() => {
+        dismiss('updating');
+        toast({ title: 'Book updated!', duration: 10000 });
+        router.push('/books');
+        refetch();
+      })
+      .catch((err) => {
+        dismiss('updating');
+
+        toast({
+          title: 'Error updating book',
+          description: `${err.message}`,
+          duration: 10000,
+        });
+      });
   };
 
   const defaultValues: BookFormData = {
-    author: book?.author || '',
+    author: book?.author
+      ? { label: book.author.name, value: book.author.id }
+      : null,
     published_date: book?.published_date || '',
     title: book?.title || '',
     genres: book?.genres?.map((g) => ({ label: g.name, value: g.id })) || [],
   };
+
+  const errors = (error as AxiosError)?.response?.data?.errors?.reduce(
+    (acc, field) => {
+      console.log({ acc, field });
+      return {
+        ...acc,
+        [field.path]: {
+          message: field.msg,
+        },
+      };
+    },
+    {},
+  );
 
   if (isLoading) {
     return <LoadingState />;
@@ -81,7 +98,11 @@ export default function EditBookPage() {
           enjoyable as possible.
         </p>
 
-        <BookForm onSubmit={onSubmit} defaultValues={defaultValues} />
+        <BookForm
+          onSubmit={onSubmit}
+          defaultValues={defaultValues}
+          errors={errors}
+        />
       </div>
     </Page>
   );
