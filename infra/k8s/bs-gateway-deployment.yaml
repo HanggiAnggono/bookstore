@@ -29,6 +29,12 @@ spec:
               protocol: TCP
             - containerPort: 9876
               protocol: TCP
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bs-secret
+                  key: JWT_SECRET
           resources:
             requests:
               memory: "64Mi"

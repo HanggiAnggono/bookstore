@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { z } from 'zod';
+import { api } from '../api';
 
 export const bookFormSchema = z.object({
   id: z.string().optional(),
@@ -31,26 +31,22 @@ export type Book = {
 };
 
 export const getBooks = () => {
-  return axios.get('/bs_api/books/').then((res) => res.data?.data as Book[]);
+  return api.get('/bs_api/books/').then((res) => res.data.data as Book[]);
 };
 
 export const getBook = (bookId: string) => {
-  return axios
+  return api
     .get(`/bs_api/books/${bookId}`)
-    .then((res) => res.data?.data as Book);
+    .then((res) => res.data.data as Book);
 };
 
 export const createBook = (body: z.infer<typeof bookFormSchema>) => {
-  return axios.post('/bs_api/books/', body).then((res) => res.data);
+  return api.post('/bs_api/books/', body).then((res) => res.data);
 };
 
 export const updateBook = (
   bookId: string,
   body: z.infer<typeof bookFormSchema>,
 ) => {
-  return axios
-    .put(`/bs_api/books/${bookId}`, body, {
-      headers: { 'Content-Type': 'application/json' },
-    })
-    .then((res) => res.data);
+  return api.put(`/bs_api/books/${bookId}`, body).then((res) => res.data);
 };

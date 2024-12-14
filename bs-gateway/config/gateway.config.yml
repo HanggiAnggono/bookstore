@@ -42,7 +42,13 @@ pipelines:
     apiEndpoints:
       - api
     policies:
-      # - key-auth:
+      - log:
+          action:
+            message: 'api ${req.method} ${req.path}'
+      - jwt:
+          - action:
+              secretOrPublicKey: ${JWT_SECRET}
+              checkCredentialExistence: false
       - proxy:
           - condition:
               name: pathMatch

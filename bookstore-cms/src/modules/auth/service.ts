@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { z } from 'zod';
+import { api } from '../api';
 
 export const loginFormSchema = z.object({
   email: z.string().email(),
@@ -7,7 +7,7 @@ export const loginFormSchema = z.object({
 });
 
 export const getSession = () => {
-  return axios.get('/bs_api/auth/session').then((res) => res.data);
+  return api.get('/bs_api/auth/session').then((res) => res.data);
 };
 
 export const login = ({
@@ -19,9 +19,9 @@ export const login = ({
 }) => {
   // make a request to gateway directly
   const url = `${process.env.API_GATEWAY_URL}/api/auth/login`;
-  return axios.post(url, { email, password }).then((res) => res.data);
+  return api.post(url, { email, password }).then((res) => res.data);
 };
 
 export const logout = () => {
-  return axios.delete('/bs_api/auth/logout').then((res) => res.data);
+  return api.delete('/bs_api/auth/logout').then((res) => res.data);
 };

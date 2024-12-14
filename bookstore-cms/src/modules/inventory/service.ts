@@ -1,6 +1,7 @@
-import { Book } from '../books/service'
+import { api } from '../api';
+import { Book } from '../books/service';
 
-type InventoryAction = 'add' | 'remove'
+type InventoryAction = 'add' | 'remove';
 
 export type Inventory = {
   id: number;
@@ -11,22 +12,14 @@ export type Inventory = {
 };
 
 export const getInventories = () => {
-  return fetch('/bs_api/inventory/', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  }).then((res) => res.json().then((data) => data?.data as Inventory[]));
+  return api.get('/bs_api/inventory').then((res) => res.data as Inventory[]);
 };
 
 export const addInventory = (
   bookId: string | number,
   params: { quantity: number; action: InventoryAction },
 ) => {
-  return fetch('/bs_api/inventory/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ book_id: bookId, ...params }),
-    credentials: 'include',
-  }).then((res) => res.json());
+  return api
+    .post('/bs_api/inventory', { book_id: bookId, ...params })
+    .then((res) => res.data);
 };

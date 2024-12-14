@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { api } from '../api';
 
 export const authorFormSchema = z.object({
   id: z.coerce.string().optional(),
@@ -13,43 +14,17 @@ export type Author = {
 };
 
 export const getAuthors = () => {
-  return fetch('/bs_api/books/authors/', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  }).then((res) => res.json().then((data) => data?.data as Author[]));
+  return api.get('/authors/').then((res) => res.data.data as Author[]);
 };
 
 export const createAuthor = (body: z.infer<typeof authorFormSchema>) => {
-  return fetch('/bs_api/books/authors/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-    credentials: 'include',
-  }).then((res) => res.json());
+  return api.post('/authors/', body);
 };
 
 export const deleteAuthor = (id: string) => {
-  return fetch(`/bs_api/books/authors/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  }).then((res) => res.json());
+  return api.delete(`/authors/${id}`);
 };
 
-export const updateAuthor = (
-  id: string,
-  body: z.infer<typeof authorFormSchema>,
-) => {
-  return fetch(`/bs_api/books/authors/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-    credentials: 'include',
-  }).then((res) => res.json());
+export const updateAuthor = (id: string, body: z.infer<typeof authorFormSchema>) => {
+  return api.put(`/authors/${id}`, body);
 };
