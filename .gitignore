@@ -2,4 +2,5 @@
 node_modules
 .env*
 .next
+infra/k8s/bs-secret.yaml
 **/*.sqlite
