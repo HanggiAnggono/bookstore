@@ -4,6 +4,10 @@ const { check, validationResult } = require('express-validator');
 const { default: axios } = require('axios');
 
 const inventoryHandler = express.Router();
+const bookstoreApi = process.env.BOOKSTORE_API_PORT.replace(
+  'tcp://',
+  'http://',
+);
 
 inventoryHandler.get('/', async function getInventories(req, res) {
   const inventories = await Inventory.findAll({ order: [['id', 'DESC']] });
@@ -11,7 +15,7 @@ inventoryHandler.get('/', async function getInventories(req, res) {
   const bookIds = inventories.map((i) => i.book_id);
 
   try {
-    const resp = await axios.get(`${process.env.API_GATEWAY_URL}/api/books`, {
+    const resp = await axios.get(`${bookstoreApi}/api/books`, {
       params: { id: bookIds },
     });
     const { data: books } = resp.data || {};
@@ -24,7 +28,7 @@ inventoryHandler.get('/', async function getInventories(req, res) {
 
     res.json({ data });
   } catch (error) {
-    res.json({
+    res.status(500).json({
       error: error.message,
     });
   }

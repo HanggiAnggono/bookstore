@@ -12,7 +12,9 @@ export type Inventory = {
 };
 
 export const getInventories = () => {
-  return api.get('/bs_api/inventory').then((res) => res.data as Inventory[]);
+  return api
+    .get('/bs_api/inventory/')
+    .then((res) => res.data?.data as Inventory[]);
 };
 
 export const addInventory = (

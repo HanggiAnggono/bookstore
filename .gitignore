@@ -4,3 +4,4 @@ node_modules
 .next
 infra/k8s/bs-secret.yaml
 **/*.sqlite
+.DS_Store

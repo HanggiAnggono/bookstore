@@ -14,17 +14,22 @@ export type Author = {
 };
 
 export const getAuthors = () => {
-  return api.get('/authors/').then((res) => res.data.data as Author[]);
+  return api
+    .get('/bs_api/books/authors/')
+    .then((res) => res.data.data as Author[]);
 };
 
 export const createAuthor = (body: z.infer<typeof authorFormSchema>) => {
-  return api.post('/authors/', body);
+  return api.post('/bs_api/books/authors/', body);
 };
 
 export const deleteAuthor = (id: string) => {
-  return api.delete(`/authors/${id}`);
+  return api.delete(`/bs_api/books/authors/${id}`);
 };
 
-export const updateAuthor = (id: string, body: z.infer<typeof authorFormSchema>) => {
-  return api.put(`/authors/${id}`, body);
+export const updateAuthor = (
+  id: string,
+  body: z.infer<typeof authorFormSchema>,
+) => {
+  return api.put(`/bs_api/books/authors/${id}`, body);
 };
