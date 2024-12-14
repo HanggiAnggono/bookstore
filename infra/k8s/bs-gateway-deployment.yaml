@@ -8,7 +8,7 @@ metadata:
     app: bs-gateway
   name: bs-gateway
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: bs-gateway
@@ -21,16 +21,9 @@ spec:
         app: bs-gateway
     spec:
       containers:
-        - env:
-            - name: BS_API_URL
-              value: http://bookstore-api:5000
-            - name: BS_INVENTORY_URL
-              value: http://bookstore-inventory:5000
-            - name: PORT
-              value: "8080"
+        - name: bs-gateway
           image: bs-gateway
           imagePullPolicy: IfNotPresent
-          name: bs-gateway
           ports:
             - containerPort: 8080
               protocol: TCP

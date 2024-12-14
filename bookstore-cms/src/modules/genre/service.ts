@@ -4,14 +4,14 @@ export type Genre = {
 };
 
 export const getGenres = () => {
-  return fetch('/api/books/genres', {
+  return fetch('/bs_api/books/genres', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }).then((res) => res.json().then((data) => data?.data as Genre[]));
 };
 
 export const addGenre = async (genre: Omit<Genre, 'id'>) => {
-  const resp = await fetch('/api/books/genres', {
+  const resp = await fetch('/bs_api/books/genres', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

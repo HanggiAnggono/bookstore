@@ -11,7 +11,7 @@ export type Inventory = {
 };
 
 export const getInventories = () => {
-  return fetch('/api/inventory/', {
+  return fetch('/bs_api/inventory/', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }).then((res) => res.json().then((data) => data?.data as Inventory[]));
@@ -21,7 +21,7 @@ export const addInventory = (
   bookId: string | number,
   params: { quantity: number; action: InventoryAction },
 ) => {
-  return fetch('/api/inventory/', {
+  return fetch('/bs_api/inventory/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

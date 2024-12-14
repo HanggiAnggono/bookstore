@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:18-slim AS base
 
 WORKDIR /app
 
@@ -11,4 +11,9 @@ COPY . .
 EXPOSE 8080
 EXPOSE 9876
 
-CMD ["node", "server.js"]
+FROM base AS dev
+ENV LOG_LEVEL=info
+CMD ["npm", "start"]
+
+FROM base AS prod
+CMD ["npm", "start"]

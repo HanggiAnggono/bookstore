@@ -1,4 +1,7 @@
 export const qk = {
+  // auth
+  session: () => ['session'],
+
   // books
   books: (filter = {}) => ['books', filter],
   book: (id: number | string) => ['book', id],

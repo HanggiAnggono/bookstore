@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/api/:path*',
+          source: '/bs_api/:path*',
           destination: `${apiGatewayUrl}/api/:path*`,
         },
       ],

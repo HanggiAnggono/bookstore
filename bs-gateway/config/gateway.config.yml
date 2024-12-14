@@ -4,14 +4,19 @@ admin:
   port: 9876
   host: localhost
 apiEndpoints:
+  auth:
+    host: '*'
+    paths: '/api/auth/*'
   api:
     host: '*'
     paths: '/api/*'
 serviceEndpoints:
   bs_api_svc:
-    url: ${BS_API_URL:-'http://localhost:5001'}
+    url: ${BOOKSTORE_API_PORT:-'http://localhost:5001'}
   bs_inventory_svc:
-    url: ${BS_INVENTORY_URL:-'http://localhost:5002'}
+    url: ${BOOKSTORE_INVENTORY_PORT:-'http://localhost:5002'}
+  bs_auth_svc:
+    url: ${BS_AUTH_PORT:-'http://localhost:5003'}
 policies:
   - basic-auth
   - cors
@@ -21,21 +26,31 @@ policies:
   - oauth2
   - proxy
   - rate-limit
+  - jwt
 pipelines:
+  auth_pipeline:
+    apiEndpoints:
+      - auth
+    policies:
+      - proxy:
+          - condition:
+              name: pathMatch
+              pattern: '/api/auth/*'
+            action:
+              serviceEndpoint: bs_auth_svc
   default:
     apiEndpoints:
       - api
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      # - key-auth:
       - proxy:
           - condition:
               name: pathMatch
-              pattern: "/api/books/*"
+              pattern: '/api/books/*'
             action:
               serviceEndpoint: bs_api_svc
           - condition:
               name: pathMatch
-              pattern: "/api/inventory/*"
+              pattern: '/api/inventory/*'
             action:
               serviceEndpoint: bs_inventory_svc

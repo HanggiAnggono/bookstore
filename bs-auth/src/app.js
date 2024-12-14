@@ -8,10 +8,6 @@ require('dotenv').config();
 const middlewares = require('./middlewares');
 const api = require('./api');
 const { sequelize } = require('./models');
-require('./models/book');
-require('./models/genre');
-require('./models/book-genre');
-require('./models/author');
 
 const app = express();
 
@@ -22,7 +18,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
-    message: 'bs-api',
+    message: 'bs-auth',
   });
 });
 

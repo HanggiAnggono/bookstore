@@ -13,14 +13,14 @@ export type Author = {
 };
 
 export const getAuthors = () => {
-  return fetch('/api/books/authors/', {
+  return fetch('/bs_api/books/authors/', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }).then((res) => res.json().then((data) => data?.data as Author[]));
 };
 
 export const createAuthor = (body: z.infer<typeof authorFormSchema>) => {
-  return fetch('/api/books/authors/', {
+  return fetch('/bs_api/books/authors/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export const createAuthor = (body: z.infer<typeof authorFormSchema>) => {
 };
 
 export const deleteAuthor = (id: string) => {
-  return fetch(`/api/books/authors/${id}`, {
+  return fetch(`/bs_api/books/authors/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export const updateAuthor = (
   id: string,
   body: z.infer<typeof authorFormSchema>,
 ) => {
-  return fetch(`/api/books/authors/${id}`, {
+  return fetch(`/bs_api/books/authors/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

@@ -17,6 +17,7 @@ import {
   BookCopy,
   Home,
   Info,
+  LogOutIcon,
   LucideBackpack,
   User,
 } from 'lucide-react';
@@ -52,6 +53,11 @@ const items = [
     title: 'About',
     url: '/about',
     icon: Info,
+  },
+  {
+    title: 'Logout',
+    url: '/logout',
+    icon: LogOutIcon,
   },
 ];
 

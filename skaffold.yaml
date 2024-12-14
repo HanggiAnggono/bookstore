@@ -8,6 +8,15 @@ build:
   local:
     push: false
   artifacts:
+    - image: bs-auth
+      context: bs-auth
+      docker:
+        dockerfile: bs-auth/Dockerfile
+        target: dev
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.js'
     - image: bookstore-api
       context: bookstore-api
       docker:
@@ -32,6 +41,7 @@ build:
       context: bs-gateway
       docker:
         dockerfile: bs-gateway/Dockerfile
+        target: dev
       sync:
         manual:
           - dest: .

@@ -31,17 +31,17 @@ export type Book = {
 };
 
 export const getBooks = () => {
-  return axios.get('/api/books/').then((res) => res.data?.data as Book[]);
+  return axios.get('/bs_api/books/').then((res) => res.data?.data as Book[]);
 };
 
 export const getBook = (bookId: string) => {
   return axios
-    .get(`/api/books/${bookId}`)
+    .get(`/bs_api/books/${bookId}`)
     .then((res) => res.data?.data as Book);
 };
 
 export const createBook = (body: z.infer<typeof bookFormSchema>) => {
-  return axios.post('/api/books/', body).then((res) => res.data);
+  return axios.post('/bs_api/books/', body).then((res) => res.data);
 };
 
 export const updateBook = (
@@ -49,7 +49,7 @@ export const updateBook = (
   body: z.infer<typeof bookFormSchema>,
 ) => {
   return axios
-    .put(`/api/books/${bookId}`, body, {
+    .put(`/bs_api/books/${bookId}`, body, {
       headers: { 'Content-Type': 'application/json' },
     })
     .then((res) => res.data);
