@@ -11,6 +11,8 @@ import Page from '@/layouts/Page';
 import { getOrders } from '@/modules/order/service';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { formatDate } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function OrderListPage() {
   const { data: orders, isLoading, error } = useQuery({
@@ -36,6 +38,11 @@ export default function OrderListPage() {
 
   return (
     <Page title="Orders">
+      <div className="mb-6 flex justify-end">
+        <Link href="/order/create">
+          <Button>Create Order</Button>
+        </Link>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -61,4 +68,3 @@ export default function OrderListPage() {
     </Page>
   );
 }
-
