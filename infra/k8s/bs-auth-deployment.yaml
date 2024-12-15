@@ -38,6 +38,11 @@ spec:
                 secretKeyRef:
                   name: bs-secret
                   key: POSTGRES_PASSWORD
+            - name: SUPABASE_SERVICE_ROLE
+              valueFrom:
+                secretKeyRef:
+                  name: bs-secret
+                  key: SUPABASE_SERVICE_ROLE
             - name: SUPABASE_KEY
               valueFrom:
                 secretKeyRef:

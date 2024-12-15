@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { RemoteSelect } from '@/components/ui/form/RemoteSelect';
 import { getBooks } from '@/modules/books/service';
 import { toLabelValues } from '@/lib/utils';
+import { getUsers } from '@/modules/user/service';
 
 type OrderFormValues = z.infer<typeof orderFormSchema>;
 
@@ -29,7 +30,7 @@ export default function CreateOrderPage() {
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      customerName: '',
+      userId: '',
       quantity: 1,
     },
   });
@@ -61,18 +62,18 @@ export default function CreateOrderPage() {
       <div className="max-w-2xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
+            <RemoteSelect
               control={form.control}
-              name="customerName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Customer Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              name="userId"
+              label="User"
+              placeholder="Select a Customer"
+              setValue={form.setValue}
+              fetcher={async () => {
+                const resp = await getUsers();
+                const users = resp.data?.users;
+                console.log({ users });
+                return toLabelValues(users, 'id', 'email');
+              }}
             />
 
             <RemoteSelect

@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 export default function LoginPage() {
   const toast = useToast();
   const router = useRouter();
+  const redirectPath = router.query.redirect as string;
   const { mutateAsync } = useMutation({
     mutationFn: (body: Parameters<typeof login>[0]) => {
       return axios.post('/api/auth/login', body);
@@ -32,7 +33,7 @@ export default function LoginPage() {
     queryFn: () =>
       getSession().then((res) => {
         if (res.data.session) {
-          router.replace('/');
+          router.replace(redirectPath || '/');
         }
       }),
   });
@@ -50,7 +51,7 @@ export default function LoginPage() {
   const onSubmit = handleSubmit(async (data) => {
     await mutateAsync(data)
       .then(() => {
-        router.replace('/');
+        router.replace(redirectPath || '/');
       })
       .catch((err) => {
         toast.toast({

@@ -9,10 +9,11 @@ Order.init({
     primaryKey: true,
     autoIncrement: true
   },
-  customerName: {
+  userId: {
     type: DataTypes.STRING,
     allowNull: false,
-    field: 'customer_name'
+    field: 'user_id',
+    comment: 'User ID from Supabase'
   },
   bookId: {
     type: DataTypes.INTEGER,
@@ -48,4 +49,4 @@ Order.init({
   underscored: true
 });
 
-module.exports = Order; 
+module.exports = Order;

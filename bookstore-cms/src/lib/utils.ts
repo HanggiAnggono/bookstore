@@ -19,12 +19,12 @@ export function absoluteUrl(path: string) {
   return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
 }
 
-export function toLabelValues(
-  items: Array<any>,
-  valueAccessor: string = 'id',
-  labelAccessor: string = 'name',
-) {
-  return items.map((item) => {
+export function toLabelValues<
+  T extends Array<object>,
+  K extends keyof T[number],
+  V extends keyof T[number],
+>(items: T, valueAccessor: K = 'id' as K, labelAccessor: V = 'name' as V) {
+  return items.map((item: T[number]) => {
     return {
       value: item[valueAccessor] as string,
       label: item[labelAccessor] as string,

@@ -2,14 +2,14 @@ import { api } from "../api";
 import { z } from "zod";
 
 export const orderFormSchema = z.object({
-  customerName: z.string().min(1, { message: "Required" }),
+  userId: z.string().min(1, { message: "Required" }),
   bookId: z.string().min(1, { message: "Required" }),
   quantity: z.coerce.number().min(1, { message: "Required" }),
 });
 
 export interface Order {
   id: number;
-  customerName: string;
+  userId: string;
   bookId: number;
   quantity: number;
   total: number;

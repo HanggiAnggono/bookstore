@@ -30,7 +30,7 @@ import { UseFormSetValue } from 'react-hook-form';
 import { PopoverClose } from '@radix-ui/react-popover';
 
 type Props = {
-  fetcher: () => Promise<any>;
+  fetcher: () => Promise<Array<{ value: string; label: string }>>;
   control: any;
   setValue: UseFormSetValue<any>;
   name: string;
@@ -55,9 +55,7 @@ export function RemoteSelect({
     },
   });
 
-  const options = isLoading
-    ? [{ label: 'Loading', value: 'loading' }]
-    : toLabelValues(data);
+  const options = isLoading ? [{ label: 'Loading', value: 'loading' }] : data;
 
   return (
     <FormField
@@ -89,7 +87,7 @@ export function RemoteSelect({
               <Command>
                 <CommandInput placeholder={`Search ${label} ...`} />
                 <CommandList>
-                  <CommandEmpty>No {name} found.</CommandEmpty>
+                  <CommandEmpty>No {label} found.</CommandEmpty>
                   <CommandGroup>
                     {options.map((option) => (
                       <CommandItem

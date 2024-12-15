@@ -1,13 +1,14 @@
 import { qk } from '@/lib/query-keys';
 import { getSession } from '@/modules/auth/service';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useToast } from './use-toast';
 
 export const useAuthProtection = (
   options?: Partial<Parameters<typeof useQuery>['0']>,
 ) => {
   const router = useRouter();
+  const currentPath = usePathname();
   const toast = useToast();
 
   useQuery({
@@ -17,7 +18,7 @@ export const useAuthProtection = (
       getSession()
         .then((data) => {
           if (data.error || data.data.session === null) {
-            router.replace('/login');
+            router.replace(`/login?redirect=${currentPath}`);
           }
         })
         .catch(() => {

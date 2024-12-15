@@ -69,7 +69,7 @@ export default function BookForm(props: Props) {
         <RemoteSelect
           control={form.control}
           name="author"
-          fetcher={async () => await getAuthors()}
+          fetcher={async () => await getAuthors().then(toLabelValues)}
           label="Author"
           setValue={form.setValue}
         />

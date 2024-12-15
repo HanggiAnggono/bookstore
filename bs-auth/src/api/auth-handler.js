@@ -10,12 +10,27 @@ const authValidator = [
 ];
 
 authHandler.get('/session', async function getSession(req, res) {
-  const session = await supabase.auth.getSession();
+  const accessToken = req.headers.authorization?.split(' ')[1];
+  const refreshToken = req.headers['refresh_token'];
 
-  res.json({
-    data: session.data,
-    error: session.error,
-  });
+  if (accessToken && refreshToken) {
+    const resp = await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
+
+    return res.json({
+      data: resp.data.session,
+      status: 'success',
+    });
+  } else {
+    const session = await supabase.auth.getSession();
+
+    res.json({
+      data: session.data,
+      error: session.error,
+    });
+  }
 });
 
 authHandler.post('/login', authValidator, async function login(req, res) {

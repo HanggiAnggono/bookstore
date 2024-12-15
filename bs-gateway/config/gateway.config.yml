@@ -54,6 +54,11 @@ pipelines:
       - proxy:
           - condition:
               name: pathMatch
+              pattern: '/api/users/*'
+            action:
+              serviceEndpoint: bs_auth_svc
+          - condition:
+              name: pathMatch
               pattern: '/api/books/*'
             action:
               serviceEndpoint: bs_api_svc
