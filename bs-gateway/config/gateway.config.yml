@@ -17,6 +17,8 @@ serviceEndpoints:
     url: ${BOOKSTORE_INVENTORY_PORT:-'http://localhost:5002'}
   bs_auth_svc:
     url: ${BS_AUTH_PORT:-'http://localhost:5003'}
+  bs_order_svc:
+    url: ${BS_ORDER_PORT:-'http://localhost:5004'}
 policies:
   - basic-auth
   - cors
@@ -60,3 +62,8 @@ pipelines:
               pattern: '/api/inventory/*'
             action:
               serviceEndpoint: bs_inventory_svc
+          - condition:
+              name: pathMatch
+              pattern: '/api/orders/*'
+            action:
+              serviceEndpoint: bs_order_svc

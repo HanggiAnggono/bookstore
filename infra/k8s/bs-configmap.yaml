@@ -42,3 +42,13 @@ metadata:
   name: bookstore-cms-config
 data:
   API_GATEWAY_URL: http://bs-gateway:8080
+
+# configmap for bs-order
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bs-order-config
+data:
+  POSTGRES_DB: bs_order
+  PORT: '5000'

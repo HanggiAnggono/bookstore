@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import {
   Blocks,
+  BookCheck,
   BookCopy,
   Home,
   Info,
@@ -48,6 +49,11 @@ const items = [
     title: 'Genres',
     url: '/genre',
     icon: Blocks,
+  },
+  {
+    title: 'Orders',
+    url: '/order',
+    icon: BookCheck,
   },
   {
     title: 'About',

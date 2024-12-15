@@ -36,6 +36,16 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.js'
+    # bs-order
+    - image: bs-order
+      context: bs-order
+      docker:
+        dockerfile: bs-order/Dockerfile
+        target: dev
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.js'
     # bs-gateway
     - image: bs-gateway
       context: bs-gateway
