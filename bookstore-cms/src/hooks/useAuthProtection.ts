@@ -2,13 +2,15 @@ import { qk } from '@/lib/query-keys';
 import { getSession } from '@/modules/auth/service';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useToast } from './use-toast';
 
 export const useAuthProtection = (
   options?: Partial<Parameters<typeof useQuery>['0']>,
 ) => {
   const router = useRouter();
+  const toast = useToast();
 
-  const { data, isLoading } = useQuery({
+  useQuery({
     ...options,
     queryKey: qk.session(),
     queryFn: async () => {
@@ -19,7 +21,11 @@ export const useAuthProtection = (
           }
         })
         .catch(() => {
-          router.replace('/login');
+          toast.toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Unable to get session',
+          });
         });
     },
   });
