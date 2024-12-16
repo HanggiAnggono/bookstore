@@ -58,6 +58,24 @@ authHandler.post('/login', authValidator, async function login(req, res) {
   });
 });
 
+// refresh token
+authHandler.post('/refresh', async function refresh(req, res) {
+  const { refresh_token } = req.body;
+  const resp = await supabase.auth.refreshSession({ refresh_token });
+
+  if (resp.error) {
+    return res.status(400).json({
+      error: resp.error,
+      status: 'error',
+    });
+  }
+
+  res.json({
+    data: resp.data.session,
+    status: 'success',
+  });
+});
+
 authHandler.delete('/logout', async function logout(req, res) {
   const resp = await supabase.auth.signOut();
 

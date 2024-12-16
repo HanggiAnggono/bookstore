@@ -1,21 +1,9 @@
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
+import createApiClient from './api-client-factory';
 
-const api = axios.create();
-
-api.interceptors.request.use((config) => {
-  const token = getCookie('access_token');
-  const refresh_token = getCookie('refresh_token');
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  if (refresh_token) {
-    config.headers.refresh_token = refresh_token;
-  }
-
-  return config;
+const api = createApiClient({
+  getCookie: (name) => getCookie(name),
+  setCookie,
 });
 
 export { api };
