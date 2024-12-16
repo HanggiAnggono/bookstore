@@ -78,7 +78,7 @@ export function RemoteSelect({
                     !field.value && 'text-muted-foreground',
                   )}
                 >
-                  {field.value ? field.value.label : placeholder || 'Select'}
+                  {(field.value ? field.value.label : placeholder) || 'Select'}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
