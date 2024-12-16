@@ -23,6 +23,7 @@ import {
   User,
 } from 'lucide-react';
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const items = [
   {
@@ -60,11 +61,6 @@ const items = [
     url: '/about',
     icon: Info,
   },
-  {
-    title: 'Logout',
-    url: '/logout',
-    icon: LogOutIcon,
-  },
 ];
 
 export function MenuLayout({ children }: { children: React.ReactNode }) {
@@ -91,7 +87,15 @@ export function MenuLayout({ children }: { children: React.ReactNode }) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter />
+
+        <SidebarFooter className="flex flex-col gap-2">
+          <ThemeToggle />
+          <SidebarMenuButton asChild>
+            <Link href="/logout">
+              <LogOutIcon /> Logout
+            </Link>
+          </SidebarMenuButton>
+        </SidebarFooter>
       </Sidebar>
       <main className="w-full">
         <SidebarTrigger />
