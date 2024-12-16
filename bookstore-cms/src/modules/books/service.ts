@@ -6,11 +6,15 @@ export const bookFormSchema = z.object({
   title: z.string().min(1, { message: 'Required' }),
   author: z
     .object({
-      value: z.coerce.string().min(1, { message: 'Required' }),
+      value: z.coerce.string().optional(),
       label: z.string(),
     })
+    .optional()
     .nullable(),
   published_date: z.string().date(),
+  default_price: z.coerce
+    .number({ message: 'Required' })
+    .min(1, { message: 'Required' }),
   genres: z
     .array(
       z.object({
@@ -27,6 +31,7 @@ export type Book = {
   author: { id: string; name: string };
   published_date: string;
   quantity_on_hand: number;
+  default_price: number;
   genres: Array<{ id: string; name: string }>;
 };
 

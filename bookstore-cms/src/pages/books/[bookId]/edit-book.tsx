@@ -59,6 +59,7 @@ export default function EditBookPage() {
       ? { label: book.author.name, value: book.author.id }
       : null,
     published_date: book?.published_date || '',
+    default_price: book?.default_price || 0,
     title: book?.title || '',
     genres: book?.genres?.map((g) => ({ label: g.name, value: g.id })) || [],
   };

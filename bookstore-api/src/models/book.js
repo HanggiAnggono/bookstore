@@ -23,6 +23,11 @@ Book.init(
       type: models.Sequelize.STRING,
       allowNull: true,
     },
+    default_price: {
+      type: models.Sequelize.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0.0,
+    },
     quantity_on_hand: {
       type: models.Sequelize.INTEGER,
       allowNull: false,

@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { getAuthors } from '@/modules/authors/service';
 import { RemoteSelect } from '../ui/form/RemoteSelect';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { FormNumberInput } from '../ui/form/form-number-input';
 
 export type BookFormData = z.infer<typeof bookFormSchema>;
 
@@ -114,6 +115,13 @@ export default function BookForm(props: Props) {
               </FormItem>
             );
           }}
+        />
+
+        <FormNumberInput
+          name="default_price"
+          label="Default Price"
+          disabled={isLoading}
+          placeholder="0.00"
         />
 
         <Button type="submit" disabled={isSubmitting || isLoading}>

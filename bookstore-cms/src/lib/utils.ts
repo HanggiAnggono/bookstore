@@ -15,6 +15,24 @@ export function formatDate(input: string | number): string {
   });
 }
 
+export function formatDateTime(input: string | number): string {
+  const date = new Date(input);
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+}
+
+export function formatCurrency(input: number): string {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  }).format(input);
+}
+
 export function absoluteUrl(path: string) {
   return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
 }

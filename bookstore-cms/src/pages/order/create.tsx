@@ -4,15 +4,7 @@ import { z } from 'zod';
 import { useRouter } from 'next/router';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import Page from '@/layouts/Page';
 import { createOrder, orderFormSchema } from '@/modules/order/service';
 import { useToast } from '@/hooks/use-toast';
@@ -24,14 +16,24 @@ import { getUsers } from '@/modules/user/service';
 type OrderFormValues = z.infer<typeof orderFormSchema>;
 
 export default function CreateOrderPage() {
+  return <OrderForm />;
+}
+
+const OrderForm = () => {
   const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<OrderFormValues>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      userId: '',
-      quantity: 1,
+      user: {
+        value: '',
+        label: '',
+      },
+      book: {
+        value: '',
+        label: '',
+      },
     },
   });
 
@@ -44,11 +46,11 @@ export default function CreateOrderPage() {
       });
       router.push('/order');
     },
-    onError: () => {
+    onError: (err) => {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Failed to create order',
+        description: err.message,
       });
     },
   });
@@ -64,21 +66,20 @@ export default function CreateOrderPage() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <RemoteSelect
               control={form.control}
-              name="userId"
+              name="user"
               label="User"
               placeholder="Select a Customer"
               setValue={form.setValue}
               fetcher={async () => {
                 const resp = await getUsers();
                 const users = resp.data?.users;
-                console.log({ users });
                 return toLabelValues(users, 'id', 'email');
               }}
             />
 
             <RemoteSelect
               control={form.control}
-              name="bookId"
+              name="book"
               label="Book"
               placeholder="Select a book"
               setValue={form.setValue}
@@ -86,20 +87,6 @@ export default function CreateOrderPage() {
                 const books = await getBooks();
                 return toLabelValues(books, 'id', 'title');
               }}
-            />
-
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantity</FormLabel>
-                  <FormControl>
-                    <Input type="number" min={1} placeholder="1" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
             />
 
             <Button type="submit" isLoading={createOrderMutation.isPending}>
@@ -110,4 +97,4 @@ export default function CreateOrderPage() {
       </div>
     </Page>
   );
-}
+};

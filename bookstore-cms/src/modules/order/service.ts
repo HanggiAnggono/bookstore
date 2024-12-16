@@ -1,17 +1,21 @@
-import { api } from "../api";
-import { z } from "zod";
+import { api } from '../api';
+import { z } from 'zod';
 
 export const orderFormSchema = z.object({
-  userId: z.string().min(1, { message: "Required" }),
-  bookId: z.string().min(1, { message: "Required" }),
-  quantity: z.coerce.number().min(1, { message: "Required" }),
+  user: z.object({
+    value: z.coerce.string(),
+    label: z.string(),
+  }),
+  book: z.object({
+    value: z.coerce.string(),
+    label: z.string(),
+  }),
 });
 
 export interface Order {
   id: number;
   userId: string;
   bookId: number;
-  quantity: number;
   total: number;
   status: 'pending' | 'completed' | 'cancelled';
   createdAt: string;

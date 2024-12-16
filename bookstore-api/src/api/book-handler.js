@@ -9,9 +9,10 @@ const bookHandler = express.Router();
 
 const bookFormValidator = [
   check('title').not().isEmpty().trim().escape(),
-  check('author').not().isEmpty().trim().escape(),
+  check('default_price').not().isEmpty().trim().escape(),
   check('published_date').not().isEmpty().trim().escape(),
-  check('genres').isArray(),
+  check('author').default({}),
+  check('genres').default([]),
   check('genres.*.value').not().isEmpty().trim().escape(),
 ];
 
@@ -55,21 +56,20 @@ bookHandler.post('/', bookFormValidator, async function createBook(req, res) {
   }
 
   const book = await Book.create({
-    title: req.body.title,
-    author: req.body.author,
-    published_date: req.body.published_date,
+    ...req.body,
+    authorId: req.body.author.value,
     genres: req.body.genres.map((g) => g.value),
   });
 
-  const genres = await Genre.findAll({
-    where: {
-      id: {
-        [Op.in]: req.body.genres.map((g) => g.value),
+  await book.setGenres(
+    await Genre.findAll({
+      where: {
+        id: {
+          [Op.in]: req.body.genres.map((g) => g.value),
+        },
       },
-    },
-  });
-
-  await book.setGenres(genres);
+    }),
+  );
 
   res.json({
     data: book,
@@ -95,24 +95,25 @@ bookHandler.put('/:id', bookFormValidator, async function updateBook(req, res) {
     return res.status(400).json({ errors: errors.array() });
   }
 
+  const { genres, author, ...body } = req.body;
+
   const payload = {
-    title: req.body.title,
-    authorId: req.body.author ? req.body.author.value : null,
+    ...body,
+    authorId: author.value,
     published_date: req.body.published_date,
   };
 
   const book = await Book.findByPk(req.params.id);
-
-  const genres = await Genre.findAll({
-    where: {
-      id: {
-        [Op.in]: req.body.genres.map((g) => g.value),
-      },
-    },
-  });
-
   await book.set(payload);
-  await book.setGenres(genres);
+  await book.setGenres(
+    await Genre.findAll({
+      where: {
+        id: {
+          [Op.in]: genres.map((g) => g.value),
+        },
+      },
+    }),
+  );
   await book.save();
 
   res.json({

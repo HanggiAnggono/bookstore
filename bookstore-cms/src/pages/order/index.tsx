@@ -10,12 +10,16 @@ import {
 import Page from '@/layouts/Page';
 import { getOrders } from '@/modules/order/service';
 import { LoadingState } from '@/components/ui/LoadingState';
-import { formatDate } from '@/lib/utils';
+import { formatCurrency, formatDateTime } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function OrderListPage() {
-  const { data: orders, isLoading, error } = useQuery({
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['orders'],
     queryFn: getOrders,
   });
@@ -48,6 +52,7 @@ export default function OrderListPage() {
           <TableRow>
             <TableHead>Order ID</TableHead>
             <TableHead>Customer</TableHead>
+            <TableHead>Book</TableHead>
             <TableHead>Order Date</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Total</TableHead>
@@ -57,10 +62,11 @@ export default function OrderListPage() {
           {orders?.map((order) => (
             <TableRow key={order.id}>
               <TableCell>{order.id}</TableCell>
-              <TableCell>{order.customerName}</TableCell>
-              <TableCell>{formatDate(order.orderDate)}</TableCell>
+              <TableCell>{order.userId}</TableCell>
+              <TableCell>{order.bookId}</TableCell>
+              <TableCell>{formatDateTime(order.createdAt)}</TableCell>
               <TableCell>{order.status}</TableCell>
-              <TableCell>${order.total.toFixed(2)}</TableCell>
+              <TableCell>{formatCurrency(order.total)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
